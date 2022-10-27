@@ -3,21 +3,21 @@ const linha = document.querySelector('.product');
 const clone = linha.cloneNode(true);
 
 
-function updateSubtotal(product) {    
-  const price = product.querySelector('.price span')
-  const quantity = product.querySelector('.quantity input')
-  const subtotal = product.querySelector('.subtotal span')
-  subtotal.innerText = +price.innerText * +quantity.value
-  return (+price.innerText * +quantity.value)
+function updateSubtotal(product) {
+  const price = product.querySelector('.price span');
+  const quantity = product.querySelector('.quantity input');
+  const subtotal = product.querySelector('.subtotal span');
+  subtotal.innerText = +price.innerText * +quantity.value;
+  return (+price.innerText * +quantity.value) 
 }
 
 
 function calculateAll() {
-    const products = document.getElementsByClassName('product')
-    let sum = 0;
-    const total = document.querySelector('#total-value span')
-    for (let i = 0; i<products.length; i++){sum += updateSubtotal(products[i])}
-    total.innerText = sum
+  const products = document.getElementsByClassName('product');
+  let sum = 0;
+  const total = document.querySelector('#total-value span');
+  for (let i = 0; i < products.length; i++) { sum += updateSubtotal(products[i]) }
+  total.innerText = sum;
 }
 
 function removeProduct(event) {
@@ -34,7 +34,7 @@ function createProduct(clone) {
 
   //GET TABELA E LINHA
   const tabela = document.querySelector('tbody');
-  
+
   //CLONE 
   clone = linha.cloneNode(true);
 
@@ -43,16 +43,26 @@ function createProduct(clone) {
   // Limpa os campos Quantitu e Subtotal 
   clone.querySelector('.quantity input').value = 0;
   clone.querySelector('.subtotal span').innerHTML = 0;
-  
+
   tabela.appendChild(clone);
 
-  //GERAR DELETAR
-  const btnRemove = document.querySelectorAll('.btn-remove')
-  btnRemove.forEach(btn => btn.addEventListener('click', removeProduct));
+  //Adicionar Event Listener no botão criado
+  const btnRemove = clone.children[4].firstElementChild
+  btnRemove.addEventListener('click', removeProduct);
 
 }
 
+function removerComentarios() {
+  newTfoot = document.querySelector("tfoot").innerHTML.slice(14, 399) //não faça isso em producao
+  document.querySelector("tfoot").remove()
+  d1 = document.getElementById("cart").appendChild(document.createElement('tfoot'))
+  d1.insertAdjacentHTML('afterend', newTfoot);
+  
+}
+
 window.addEventListener('load', () => {
+  removerComentarios()
+
   const calculatePricesBtn = document.getElementById('calculate');
   calculatePricesBtn.addEventListener('click', calculateAll);
 
@@ -63,8 +73,5 @@ window.addEventListener('load', () => {
   //BUSCA BOTAO REMOVER 
   const btnRemove = document.querySelectorAll('.btn-remove')
   btnRemove.forEach(btn => btn.addEventListener('click', removeProduct));
-    
-})
-  
 
-  
+})
